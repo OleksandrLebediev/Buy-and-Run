@@ -4,30 +4,28 @@ using DG.Tweening;
 
 
 [RequireComponent(typeof(PlayerAnimator))]
-public class Player : MonoBehaviour, IPlayerEvents
+public class Player : MonoBehaviour
 {
-    [SerializeField] private TouchHandler _touchHandler;
     [SerializeField] private ShopingCart _shopingCart;
     [SerializeField] private PlayerPriceDisplay _playerPriceDisplay;
-    [SerializeField] private AddedMoneyEffect _moneyEffect;
-    [SerializeField] private CapsuleCollider _collider;
     [SerializeField] private Transform _body;
 
     private PlayerMovement _movement;
+    private CapsuleCollider _collider;
     private Rigidbody _rigidbody;
     private PlayerAnimator _playerAnimator;
     private PlayerWallet _wallet;
     private AudioSource _audioSource;
+    private AddedMoneyEffect _moneyEffect;
     private int _priceAllItems;
 
     public PlayerMovement PlayerMovement { get { return _movement; } }
     public Rigidbody Rigidbody { get { return _rigidbody; } }   
-    public PlayerWallet Wallet { get { return _wallet; } }
     public ShopingCart ShopingCart { get { return _shopingCart; } }
     public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } }
     public PlayerPriceDisplay PlayerPriceDisplay { get { return _playerPriceDisplay; } }
 
-    public event UnityAction CubeDestroyed;
+    public event UnityAction Died;
 
     private void Awake()
     {
@@ -39,14 +37,12 @@ public class Player : MonoBehaviour, IPlayerEvents
         _collider = GetComponent<CapsuleCollider>();
     }
 
-    private void Start()
-    {
-        Initialize(_touchHandler);
-    }
-
-    public void Initialize(TouchHandler touchHandler)
+    public void Initialize(TouchHandler touchHandler, 
+        AddedMoneyEffect addedMoneyEffect, PlayerWallet wallet)
     {
         _movement.Initialize(touchHandler);
+        _moneyEffect = addedMoneyEffect;
+        _wallet = wallet;
 
         _shopingCart.ItemAdded += OnItemAdded;
         _shopingCart.ItemRemoved += OnItemRemoved;

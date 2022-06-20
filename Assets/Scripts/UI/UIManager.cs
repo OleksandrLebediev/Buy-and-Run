@@ -9,15 +9,17 @@ public class UIManager : MonoBehaviour, IUIEventsHandler
     [SerializeField] private TransitionScreen _transitionScreen;
     
     private IPlayerEvents _playerEvents;
+    private IFinishEvents _finishEvents;
     private UIInputData _uIInputData;
 
     public event UnityAction PressedRestartButton;
     public event UnityAction PressedNextButton;
 
-    public void Initialize(IPlayerEvents playerEvents, 
+    public void Initialize(IPlayerEvents playerEvents, IFinishEvents finishEvents,
         UIInputData uIInputData, PlayerWallet playerWallet)
     {
         _playerEvents = playerEvents;
+        _finishEvents = finishEvents;
         _uIInputData = uIInputData;
 
         _transitionScreen.Show();
@@ -47,13 +49,13 @@ public class UIManager : MonoBehaviour, IUIEventsHandler
         PressedNextButton?.Invoke();
     }
 
-    public void OnCubeDestroyed()
+    public void OnPlayerDied()
     {
         _loseScreen.Show(_uIInputData.LevelsInformant.CurrentLevelID + 1,
             _uIInputData.BalanceInformant.AmountMoneyPerLevel);
     }
 
-    private void OnRewardPlaygroundPassed()
+    private void OnLevelCompleted()
     {
         _winScreen.Show(_uIInputData.LevelsInformant.CurrentLevelID + 1, 
             _uIInputData.BalanceInformant.AmountMoneyPerLevel);
@@ -63,14 +65,16 @@ public class UIManager : MonoBehaviour, IUIEventsHandler
     {
         _loseScreen.PressedRestartButton += OnPressedRestartButton;
         _winScreen.PressedNextButton += OnPressedNextButton;
-        _playerEvents.CubeDestroyed += OnCubeDestroyed;
+        _playerEvents.PlayerDied += OnPlayerDied;
+        _finishEvents.LevelCompleted += OnLevelCompleted;
     }
 
     private void Unsubscribe()
     {
         _loseScreen.PressedRestartButton -= OnPressedRestartButton;
         _winScreen.PressedNextButton -= OnPressedNextButton;
-        _playerEvents.CubeDestroyed -= OnCubeDestroyed;
+        _playerEvents.PlayerDied -= OnPlayerDied;
+        _finishEvents.LevelCompleted -= OnLevelCompleted;
     }
 
     private void OnDestroy()

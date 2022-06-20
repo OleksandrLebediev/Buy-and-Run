@@ -2,6 +2,6 @@
 
 public interface IPlayerEvents
 {
-    public event UnityAction CubeDestroyed;
+    public event UnityAction PlayerDied;
 }
 

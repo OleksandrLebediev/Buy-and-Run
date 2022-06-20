@@ -10,6 +10,7 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
 
     private List<Item> _items = new List<Item>();
     private ItemTransmitter _itemTransmitter = new ItemTransmitter();
+    private JumpData _jumpData = new JumpData(1, 4, 0.5f);
 
     private float _receiveDelay = 0.05f;
 
@@ -18,6 +19,7 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
     private readonly float _offset = 0.4f;
 
     public Transform ThisTransform => transform;
+    public JumpData JumpData => _jumpData;
     public bool IsEmpty => _items.Count == 0;
     public float TransmitDelay => _receiveDelay;
     public float ReceiveDelay => _receiveDelay;

@@ -12,11 +12,13 @@ public class Buyer : MonoBehaviour, IBuyer
     [SerializeField] private Transform _receptionPoint;
 
     private float _receiveDelay = 0.05f;
+    private JumpData _jumpData = new JumpData(1, 4, 0.5f);
 
     public Transform ThisTransform => transform;
     public float ReceiveDelay => _receiveDelay;
     public int OrderPrice =>  _orderPrice;
     public string OrderItemName => _itemData.ItemName;
+    public JumpData JumpData => _jumpData;
 
     private void OnEnable()
     {

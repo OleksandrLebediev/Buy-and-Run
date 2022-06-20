@@ -2,6 +2,16 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField] private Transform _lastPlatformPosition;
-    public Vector3 LastPlatformPosition => _lastPlatformPosition.position;
+    public int LengthLevelRoad => _road.Length;
+    private Road _road;
+
+    private void Awake()
+    {
+        _road = GetComponentInChildren<Road>();
+    }
+
+    public void Initialize()
+    {
+
+    }
 }

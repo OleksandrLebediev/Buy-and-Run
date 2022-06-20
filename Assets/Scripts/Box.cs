@@ -22,8 +22,11 @@ public class Box : MonoBehaviour, IItemsRecipient
     private float _openDuration = 0.1f;
     public Transform ThisTransform => transform;
     public float ReceiveDelay => _receiveDelay;
+    public JumpData JumpData => _jumpData;
 
     private List<Item> _items = new List<Item>();
+    private JumpData _jumpData = new JumpData(1, 5, 0.5f);
+
     private Tween _sizeTween;
     private float _scaleTarget = 1.2f;
     private float _scaleDuration = 0.1f;

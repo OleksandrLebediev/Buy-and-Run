@@ -2,16 +2,17 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-
+//4, 1, 0.5f)
 public class ItemTransmitter
 {
-    private void Transmitting(Item item, Vector3 target, UnityAction<Item> callback, Transform parent)
+    private void Transmitting(Item item, IItemsRecipient recipient)
     {
-        item.SetParent(parent);
+        JumpData data = recipient.JumpData;
+        item.SetParent(recipient.ThisTransform);
         item.DisablePhysics();
-        item.transform.DOLocalJump(target, 4, 1, 0.5f).OnComplete(() =>
+        item.transform.DOLocalJump(recipient.GetPosition(), data.Power, data.Number, data.Duration).OnComplete(() =>
        {
-           callback.Invoke(item);
+           recipient.OnItemReceived(item);
        });
     }
 
@@ -21,17 +22,35 @@ public class ItemTransmitter
         while (sender.IsEmpty == false)
         {
             Item item = sender.GetItem();
-            Transmitting(item, recipient.GetPosition(), recipient.OnItemReceived, recipient.ThisTransform);
+            Transmitting(item, recipient);
             recipient.OnItemReceiving(item);
             yield return delay;
         }
     }
 
-    public void TransmittingItem(Item item, IItemsSender sender, IItemsRecipient recipient)
+    public void TransmittingItem(Item item,IItemsSender sender, IItemsRecipient recipient)
     {
-        Transmitting(item, recipient.GetPosition(), recipient.OnItemReceived, recipient.ThisTransform);
+        Transmitting(item, recipient);
         recipient.OnItemReceiving(item);
     }
+}
+
+public class JumpData
+{
+    private int _number;
+    private float _power;
+    private float _duration;
+
+    public JumpData(int number, float power, float duration)
+    {
+        _number = number;
+        _power = power;
+        _duration = duration;
+    }
+
+    public int Number { get { return _number; } }
+    public float Power { get { return _power; } }
+    public float Duration { get { return _duration; } }
 }
 
 

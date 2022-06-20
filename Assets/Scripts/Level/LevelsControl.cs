@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class LevelsControl : MonoBehaviour, ILevelsInformant, ILevelsControlEventHandler
 {
+    [SerializeField] private LevelSpawner _spawner;
     private IUIEventsHandler _uIEvents;
-    private LevelSpawner _spawner;
     private int _currentLevel = 0;
 
     public int CurrentLevelID => _currentLevel;
@@ -19,14 +19,20 @@ public class LevelsControl : MonoBehaviour, ILevelsInformant, ILevelsControlEven
         _uIEvents = uIEvent;
         _uIEvents.PressedRestartButton += RestartLevel;
         _uIEvents.PressedNextButton += StartNextLevel;
-
+        StartLevel(_currentLevel);
     }
 
     private void OnDestroy()
     {
-       // _uIEvents.PressedRestartButton -= RestartLevel;
-       // _uIEvents.PressedNextButton -= StartNextLevel;
+       _uIEvents.PressedRestartButton -= RestartLevel;
+       _uIEvents.PressedNextButton -= StartNextLevel;
     }
+
+    public void StartLevel()
+    {
+        LevelStart?.Invoke(_currentLevel);
+    }
+
 
     private void StartLevel(int level)
     {

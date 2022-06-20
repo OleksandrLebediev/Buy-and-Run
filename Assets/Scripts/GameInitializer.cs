@@ -2,58 +2,69 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] private UIManager _uIManager;
     [SerializeField] private TouchHandler _touchHandler;
-    [SerializeField] private LevelsControl _levelsControl;
+    [SerializeField] private AddedMoneyEffect _moneyEffect;
 
-    [SerializeField] private Player _player;
+    [Header("Spawners")]
+    [SerializeField] private PlayerSpawner _playerSpawner;
+    [SerializeField] private LevelSpawner _levelSpawner;
+    [SerializeField] private FinishSpawner _finishSpawner;
+
+    [Header("Handlers")]
+    [SerializeField] private LevelsControl _levelsControl;
+    [SerializeField] private CameraHendler _cameraHendler;
+    [SerializeField] private PlayerWallet _wallet;
+
     private BinarySaveSystem _saveSystem;
+    private GameAnalyticsHandler _gameAnalyticsHandler;
+
+    private void OnEnable()
+    {
+        _levelsControl.LevelStart += OnLevelStart;
+    }
+
+    private void OnDisable()
+    {
+        _levelsControl.LevelStart -= OnLevelStart;
+    }
 
     private void Start()
     {
-        _player.Initialize(_touchHandler);
-
         _saveSystem = new BinarySaveSystem();
+        _gameAnalyticsHandler = new GameAnalyticsHandler();
+
         SaveData data = _saveSystem.Load();
 
+        _wallet.Initialize(data.Money);
+        _levelsControl.Initialize(_uIManager, data.Level);
+        _gameAnalyticsHandler.Intialize(_levelsControl, _wallet);
 
-        UIInputData uIInputData = new UIInputData(_levelsControl, _player.Wallet, _touchHandler);
-        _uIManager.Initialize(_player, uIInputData, _player.Wallet);
-
-        //_levelsSwitcher.LevelChanges += OnLevelChanges;
-        //_levelsSwitcher.LevelRestarted += OnLevelRestarted;
-        //_levelsSwitcher.LevelStart += OnLevelStart;
+        
+        UIInputData uIInputData = new UIInputData(_levelsControl, _wallet, _touchHandler);
+        _uIManager.Initialize(_playerSpawner, _finishSpawner, uIInputData, _wallet);
+        _touchHandler.Initialize(_uIManager);
+        _levelsControl.StartLevel();
     }
-
-    //private void OnLevelStart()
-    //{
-    //    TinySauce.OnGameStarted("level_" + _levelsSwitcher.CurrentLevel);
-    //    SaveData data = new SaveData(_levelsSwitcher.CurrentLevel, _playerProvider.Player.Wallet.AmountMoney);
-    //    _saveSystem.Save(data);
-    //}
-
-    //private void OnLevelRestarted()
-    //{
-    //    TinySauce.OnGameFinished(false, _playerProvider.Player.Wallet.AmountMoneyPerLevel,
-    //        "level_" + _levelsSwitcher.CurrentLevel);
-    //}
-
-    //private void OnLevelChanges()
-    //{
-    //    TinySauce.OnGameFinished(true, _playerProvider.Player.Wallet.AmountMoneyPerLevel,
-    //        "level_" + _levelsSwitcher.CurrentLevel);
-    //}
-
-    //private void OnDestroy()
-    //{
-    //    _levelsSwitcher.LevelChanges -= OnLevelChanges;
-    //    _levelsSwitcher.LevelRestarted -= OnLevelRestarted;
-    //    _levelsSwitcher.LevelStart -= OnLevelStart;
-    //}
 
     private void OnApplicationQuit()
     {
-        //SaveData data = new SaveData(_levelsSwitcher.CurrentLevel, _playerProvider.Player.Wallet.AmountMoney);
-        //_saveSystem.Save(data);
+        SaveData data = new SaveData(_levelsControl.CurrentLevelID, _wallet.AmountMoney);
+        _saveSystem.Save(data);
+    }
+
+    private void OnLevelStart(int levelId)
+    {
+        Player player = _playerSpawner.Spawn();
+        player.Initialize(_touchHandler, _moneyEffect, _wallet);
+
+        Level level = _levelSpawner.Spawn(levelId);
+        level.Initialize();
+
+        FinishZone finishZone = _finishSpawner.Spawn(level.LengthLevelRoad);
+        finishZone.Initialize(_cameraHendler);
+
+        _cameraHendler.SetFollow(player.transform);
     }
 }

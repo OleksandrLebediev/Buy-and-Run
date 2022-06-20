@@ -10,17 +10,17 @@ public class TouchHandler : MonoBehaviour, ITouchHandler, IDragHandler, IPointer
     public event UnityAction FirstTouch;
     public event UnityAction<float> MovingTouch;
 
-    //public void Initialize(IUIAnswer uIAnswer)
-    //{
-    //    _answer = uIAnswer;
-    //    uIAnswer.PressedRestartButton += OnRestartFirstClick;
-    //    uIAnswer.PressedNextButton += OnRestartFirstClick;
-    //}
-    //private void OnDestroy()
-    //{
-    //    _answer.PressedRestartButton -= OnRestartFirstClick;
-    //    _answer.PressedNextButton -= OnRestartFirstClick;
-    //}
+    public void Initialize(IUIEventsHandler uIAnswer)
+    {
+        _answer = uIAnswer;
+        uIAnswer.PressedRestartButton += OnRestartFirstClick;
+        uIAnswer.PressedNextButton += OnRestartFirstClick;
+    }
+    private void OnDestroy()
+    {
+        _answer.PressedRestartButton -= OnRestartFirstClick;
+        _answer.PressedNextButton -= OnRestartFirstClick;
+    }
 
     private void OnRestartFirstClick()
     {

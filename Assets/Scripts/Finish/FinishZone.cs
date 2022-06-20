@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FinishZone : MonoBehaviour
 {
@@ -10,19 +11,29 @@ public class FinishZone : MonoBehaviour
     [SerializeField] private Transform _breakpoint;
     [SerializeField] private MultiplierBoardRoad _boardRoad;
     [SerializeField] private Box _box;
-    [SerializeField] private CinemachineVirtualCamera _camera2;
-
-
 
     private float _jumpSpeed = 1;
     private Player _player;
     private int _powerForce = 50;
 
     private ItemTransmitter _itemTransmitter = new ItemTransmitter();
+    private CameraHendler _cameraHendler;
 
-    private void Start()
+    public event UnityAction LevelCompleted;
+
+    private void OnEnable()
     {
         _finishLine.Finished += OnPlayerFinished;
+    }
+
+    private void OnDisable()
+    {
+        _finishLine.Finished -= OnPlayerFinished;
+    }
+
+    public void Initialize(CameraHendler cameraHendler)
+    {
+        _cameraHendler = cameraHendler;
     }
 
     private void OnPlayerFinished(Player player)
@@ -35,7 +46,7 @@ public class FinishZone : MonoBehaviour
     {
         player.PlayerMovement.DisableMovement();
         player.PlayerPriceDisplay.Hide();
-        _camera2.Priority = 11;
+        _cameraHendler.ChangeVirtualCamera();   
 
         yield return player.transform.DOMove(_breakpoint.position, 1).WaitForCompletion();
         player.PlayerAnimator.OnPushAnimation(false);
@@ -86,6 +97,8 @@ public class FinishZone : MonoBehaviour
 
         _boardRoad.ActivateConfetti();
 
+        yield return new WaitForSeconds(2.5f);
+        LevelCompleted?.Invoke();
 
     }
 

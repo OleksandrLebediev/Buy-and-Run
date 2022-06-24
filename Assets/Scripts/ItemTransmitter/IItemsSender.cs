@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IItemsSender
 {
-    public Item GetItem();
+    public Item GetItem(string Name = null);
     public bool IsEmpty { get; }
 }

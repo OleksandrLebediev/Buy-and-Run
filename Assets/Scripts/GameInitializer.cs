@@ -6,6 +6,7 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] private UIManager _uIManager;
     [SerializeField] private TouchHandler _touchHandler;
     [SerializeField] private AddedMoneyEffect _moneyEffect;
+    [SerializeField] private BoostSpeedEffect _speedEffect;
 
     [Header("Spawners")]
     [SerializeField] private PlayerSpawner _playerSpawner;
@@ -57,13 +58,13 @@ public class GameInitializer : MonoBehaviour
     private void OnLevelStart(int levelId)
     {
         Player player = _playerSpawner.Spawn();
-        player.Initialize(_touchHandler, _moneyEffect, _wallet);
+        player.Initialize(_touchHandler, _speedEffect, _moneyEffect, _wallet);
 
         Level level = _levelSpawner.Spawn(levelId);
         level.Initialize();
 
         FinishZone finishZone = _finishSpawner.Spawn(level.LengthLevelRoad);
-        finishZone.Initialize(_cameraHendler);
+        finishZone.Initialize(_cameraHendler, _wallet);
 
         _cameraHendler.SetFollow(player.transform);
     }

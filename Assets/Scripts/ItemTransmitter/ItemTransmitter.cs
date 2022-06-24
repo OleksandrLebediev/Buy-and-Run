@@ -28,6 +28,24 @@ public class ItemTransmitter
         }
     }
 
+    public IEnumerator MultiCountTransmittingCoroutine(int count, string nameItem ,
+        IItemsSender sender, IItemsRecipient recipient, UnityAction action)
+    {
+        WaitForSeconds delay = new WaitForSeconds(recipient.ReceiveDelay);
+        while (count != 0)
+        {
+            Item item = sender.GetItem(nameItem);
+            if(item == null) yield break;
+
+            Transmitting(item, recipient);
+            recipient.OnItemReceiving(item);
+            count--;
+            yield return delay;
+        }
+
+        action.Invoke();
+    }
+
     public void TransmittingItem(Item item,IItemsSender sender, IItemsRecipient recipient)
     {
         Transmitting(item, recipient);

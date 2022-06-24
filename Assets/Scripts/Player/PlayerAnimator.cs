@@ -11,6 +11,7 @@ public class PlayerAnimator : MonoBehaviour
     private const string Falling = "IsFalling";
     private const string Grounded = "IsGrounded";
     private const string FlatImpact = "IsFlatImpact";
+    private const string Sad = "IsSad";
 
     private void Awake()
     {
@@ -20,6 +21,11 @@ public class PlayerAnimator : MonoBehaviour
     public void DisableAnimation()
     {
         _animator.enabled = false;  
+    }
+
+    public void SetSpeedAnimation(int speed)
+    {
+        _animator.speed = speed;
     }
 
     public void OnPushAnimation(bool value)
@@ -46,4 +52,9 @@ public class PlayerAnimator : MonoBehaviour
     {
         _animator.SetBool(FlatImpact, value);
     }
+
+    public void OnSad(bool value)
+    {
+        _animator.SetBool(Sad, value);
+    }    
 }

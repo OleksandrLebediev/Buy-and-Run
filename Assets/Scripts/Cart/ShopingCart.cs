@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
+public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender, ICashCollector
 {
     [SerializeField] private ShoppingCartDisplay _display;
+    [SerializeField] private GameObject _bodyCart;
+    [SerializeField] private GameObject _crashBodyCart;
 
     private List<Item> _items = new List<Item>();
     private ItemTransmitter _itemTransmitter = new ItemTransmitter();
@@ -26,7 +28,11 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
 
     public event UnityAction<int> ItemAdded;
     public event UnityAction<int> ItemRemoved;
+    public event UnityAction<int> ItemLost;
     public event UnityAction<int> ItemSold;
+    public event UnityAction<int> Cash—ollected;
+    public event UnityAction Crashed; 
+    public event UnityAction SpeedBoosted;
 
     public void Hide()
     {
@@ -35,11 +41,8 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
 
     public void TryGetItemForMoney(IBuyer buyer)
     {
-        Item item = _items.Find(x => x.Name == buyer.OrderItemName);
-        if (item == null) return;
-        _itemTransmitter.TransmittingItem(item, this, buyer);
-        ItemSold?.Invoke(buyer.OrderPrice);
-        RemoveItem(item);
+        StartCoroutine(_itemTransmitter.MultiCountTransmittingCoroutine(buyer.OrderAmountItems,
+            buyer.OrderItemName, this, buyer, () => ItemSold?.Invoke(buyer.OrderAmountItems)));
     }
 
     private void AddItem(Item item)
@@ -55,12 +58,25 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
         ItemRemoved?.Invoke(item.Price);
     }
 
+    private void LostItem(Item item)
+    {
+        _items.Remove(item);
+        ItemLost?.Invoke(item.Price);
+    }
+
     public void TakeDamage(int damage)
     {
+        if(_items.Count == 0)
+        {
+            Crash();
+            return;
+        }
+
+
         while (damage > 0 && _items.Count != 0)
         {
             Item item = _items[0];
-            RemoveItem(item);
+            LostItem(item);
             _display.AddCash(-item.Price);
             item.SetParent(null);
             item.Explosion(transform.up * 20);
@@ -69,13 +85,30 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
         }
     }
 
-    public Item GetItem()
+    private void Crash()
     {
-        Item item = _items[0];
+        _bodyCart.SetActive(false);
+        _crashBodyCart.SetActive(true);
+        Crashed?.Invoke();
+    }
+
+    public Item GetItem(string name = null)
+    {
+        Item item;
+        if (name != null)
+        {
+            item = _items.Find(x => x.Name == name);
+            if (item == null) return null;
+        }
+        else
+        {
+            item = _items[0];
+        }
+
         RemoveItem(item);
         return item;
     }
-  
+
     public void OnItemReceiving(Item item)
     {
         AddItem(item);
@@ -89,5 +122,15 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender
     public Vector3 GetPosition()
     {
         return new Vector3(Random.Range(_offset - _width, _width - _offset), 1, Random.Range(_offset - _length, _length));
+    }
+
+    public void SpeedBoost()
+    {
+        SpeedBoosted?.Invoke();
+    }
+
+    public void CollectCash(int cash)
+    {
+        Cash—ollected?.Invoke(cash);
     }
 }

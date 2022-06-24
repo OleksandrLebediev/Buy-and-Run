@@ -11,13 +11,20 @@ public class FinishZone : MonoBehaviour
     [SerializeField] private Transform _breakpoint;
     [SerializeField] private MultiplierBoardRoad _boardRoad;
     [SerializeField] private Box _box;
+    [SerializeField] private AudioSource _audioSource;
+
+    [SerializeField] private AudioClip _jumpClip;
+    [SerializeField] private AudioClip _fallingClip;
+    [SerializeField] private AudioClip _winClip;
+    [SerializeField] private AudioClip _fallenClip;
 
     private float _jumpSpeed = 1;
     private Player _player;
-    private int _powerForce = 50;
+    private int _powerForce;
 
     private ItemTransmitter _itemTransmitter = new ItemTransmitter();
     private CameraHendler _cameraHendler;
+    private PlayerWallet _playerWallet;
 
     public event UnityAction LevelCompleted;
 
@@ -31,21 +38,22 @@ public class FinishZone : MonoBehaviour
         _finishLine.Finished -= OnPlayerFinished;
     }
 
-    public void Initialize(CameraHendler cameraHendler)
+    public void Initialize(CameraHendler cameraHendler, PlayerWallet wallet)
     {
         _cameraHendler = cameraHendler;
+        _playerWallet = wallet;
     }
 
     private void OnPlayerFinished(Player player)
     {
         _player = player;
+        _powerForce = player.PriceAllItems;
+        _player.OnFinishEntered();
         StartCoroutine(AwardScenario(player));
     }
 
     private IEnumerator AwardScenario(Player player)
     {
-        player.PlayerMovement.DisableMovement();
-        player.PlayerPriceDisplay.Hide();
         _cameraHendler.ChangeVirtualCamera();   
 
         yield return player.transform.DOMove(_breakpoint.position, 1).WaitForCompletion();
@@ -53,6 +61,7 @@ public class FinishZone : MonoBehaviour
 
         yield return _itemTransmitter.MultiTransmittingCoroutine(player.ShopingCart, _box);
         yield return _box.CloseCoroutine();
+        player.PriceDisplay.Hide();
         player.ShopingCart.Hide();
         Vector3 targetJump = _box.transform.position;
         targetJump.y += 2;
@@ -78,6 +87,7 @@ public class FinishZone : MonoBehaviour
         _player.EnablePhysics();
         _player.ForceUP(_powerForce);
         _player.PlayerAnimator.OnFalling(true);
+        _audioSource.PlayOneShot(_fallingClip);
 
 
         while (true)
@@ -89,17 +99,21 @@ public class FinishZone : MonoBehaviour
             }
             yield return null;
         }
-        yield return new WaitForSeconds(0.5f);
 
+        yield return new WaitForSeconds(0.5f);
         player.PlayerAnimator.OnFlatImpact(true);
+        yield return new WaitForSeconds(0.15f);
+        _audioSource.PlayOneShot(_fallenClip);
 
         yield return new WaitForSeconds(2.5f);
 
         _boardRoad.ActivateConfetti();
+        _audioSource.PlayOneShot(_winClip);
 
         yield return new WaitForSeconds(2.5f);
-        LevelCompleted?.Invoke();
 
+        _playerWallet.MultiplyMoney(_boardRoad.GetMultiplier());
+        LevelCompleted?.Invoke();
     }
 
 
@@ -110,6 +124,8 @@ public class FinishZone : MonoBehaviour
 
         player.transform.DOJump(target, 4, 1, _jumpSpeed);
         player.PlayerAnimator.OnJumping(true);
+
+        _audioSource.PlayOneShot(_jumpClip);
 
         yield return new WaitForSeconds(_jumpSpeed - 0.5f);
 

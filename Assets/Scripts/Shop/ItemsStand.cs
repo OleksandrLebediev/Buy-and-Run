@@ -30,7 +30,7 @@ public class ItemsStand : MonoBehaviour, IItemsSender
         _data = data;
     }
 
-    public Item GetItem()
+    public Item GetItem(string name = null)
     {
         Item item = _items[0];
         _items.Remove(item);

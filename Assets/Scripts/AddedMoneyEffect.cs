@@ -8,11 +8,12 @@ public class AddedMoneyEffect : MonoBehaviour
     [SerializeField] private Money2D _moneyTemplate;
     [SerializeField] private RectTransform _target;
 
-    private int _amountToMoneyPool = 20;
+    private int _amountToMoneyPool = 40;
     private RectTransform _rect;
     private List<Money2D> _money = new List<Money2D>();
+    private int _count;
 
-    public event UnityAction Effect—ompleted;
+    public event UnityAction<int> Effect—ompleted;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class AddedMoneyEffect : MonoBehaviour
 
     public void Play(int count)
     {
+        _count = count;
         for (int i = 1; i <= count; i++)
         {
             Money2D money = GetMoney2D();
@@ -54,6 +56,6 @@ public class AddedMoneyEffect : MonoBehaviour
 
     private void MoneyOnTarget()
     {
-        Effect—ompleted?.Invoke();
+        Effect—ompleted?.Invoke(_count);
     }
 }

@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class MultiplierBoard : MonoBehaviour
 {
-    [SerializeField] private Transform _place;
     [SerializeField] private Transform _body;
     [SerializeField] private ParticleSystem[] confrtti;
 
     private MeshRenderer _meshRenderer;
     private MultiplierBoardDisplay _display;
+    private float _multiplierValue;
+
+    public float MultiplierValue => _multiplierValue;
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class MultiplierBoard : MonoBehaviour
     public void SetDisplayMultiplier(float multiplierValue)
     {
         _display.SetMultiplier(multiplierValue);
+        _multiplierValue = multiplierValue;
     }
 
     public Color GetColor()
@@ -39,7 +42,8 @@ public class MultiplierBoard : MonoBehaviour
 
     public void ActivatePlace()
     {
-        _place.DOLocalMoveZ(-1.5f, 0.2f);
+        transform.DOLocalMoveZ(-3f, 0.2f);
+        _display.Flashing();
     }
 
     public void ActivateConfetti()

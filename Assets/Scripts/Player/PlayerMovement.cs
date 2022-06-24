@@ -5,12 +5,14 @@ using UnityEngine.Events;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _forwardSpeed;
+    [SerializeField] private float _forwardSpeedBoost;
     [SerializeField] private float _horizontalSpeed;
 
     private ITouchHandler _touchHandler;
     private Vector3 _movePosition = Vector3.zero;
     private float _currentForwardSpeed;
     private float _horizontalPosition;
+    private float _acceleration = 5;
     private bool _isMoving;
 
     public event UnityAction StartMoving;
@@ -36,6 +38,16 @@ public class PlayerMovement : MonoBehaviour
         _isMoving = false;
     }
 
+    public void SetSpeedBoost()
+    {
+        _currentForwardSpeed = _forwardSpeedBoost;
+    }
+
+    public void SetSpeed()
+    {
+        _currentForwardSpeed = _forwardSpeed;
+    }
+
     private void OnDestroy()
     {
         _touchHandler.MovingTouch -= HorizontalMove;
@@ -46,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_currentForwardSpeed < _forwardSpeed)
         {
-            _currentForwardSpeed += Time.deltaTime * 5;
+            _currentForwardSpeed += Time.deltaTime * _acceleration;
         }
         transform.Translate(0, 0, _currentForwardSpeed * Time.deltaTime);
     }

@@ -35,9 +35,14 @@ public class MultiplierBoardRoad : MonoBehaviour
 
     public void ActivateBoard(float positionY)
     {
-        int inex = (int)(positionY / 2) - 1;
-        _currentBoard = _multiplierBoards[inex];
+        int index = (int)(positionY / 2) - 2;
+        _currentBoard = _multiplierBoards[index];
         _currentBoard.ActivatePlace();
+    }
+
+    public float GetMultiplier()
+    {
+        return _currentBoard.MultiplierValue;
     }
 
     public void ActivateConfetti()

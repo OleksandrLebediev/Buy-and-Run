@@ -1295,8 +1295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shopSellZone: {fileID: 2281435374885141896}
-  _itemData: {fileID: 11400000, guid: 9813afa04a3955d4890a4094b76c7f44, type: 2}
+  _itemData: {fileID: 11400000, guid: 6d4d194bcf98acf4e87eedc419107b04, type: 2}
   _itemsStand: {fileID: 138282954953216460}
+  _shopDisplay: {fileID: 7426649328424761972}
 --- !u!1 &138282954920294989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,7 +1564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5614784257192768376}
   - component: {fileID: 684272535201111374}
-  - component: {fileID: 6775687596243160754}
+  - component: {fileID: 7426649328424761972}
   m_Layer: 0
   m_Name: PriceDisplay
   m_TagString: Untagged
@@ -1613,7 +1614,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &6775687596243160754
+--- !u!114 &7426649328424761972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1622,20 +1623,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2366548562300830986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Script: {fileID: 11500000, guid: 9acd4cee17fe5f94ba78e3ce6e0568fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  _itemPrice: {fileID: 3825467527144484841}
+  _itemSprite: {fileID: 8938445794211129538}
 --- !u!1 &5379463003970918574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1796,8 +1788,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7c8d50c051d01254a8ca0a6493647061, type: 2}
-  m_sharedMaterial: {fileID: -2892783480186824814, guid: 7c8d50c051d01254a8ca0a6493647061, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d166b840969ce81468b3f86988e4478f, type: 2}
+  m_sharedMaterial: {fileID: -2892783480186824814, guid: d166b840969ce81468b3f86988e4478f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

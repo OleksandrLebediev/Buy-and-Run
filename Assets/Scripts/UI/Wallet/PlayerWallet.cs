@@ -26,6 +26,13 @@ public class PlayerWallet : MonoBehaviour, IAcceptingMoney, IBalanceInformant
         AmountMoneyChanged?.Invoke(_amountMoney);
     }
 
+    public void MultiplyMoney(float amount)
+    {
+        _moneyPerLevel = (int)(_moneyPerLevel * amount);
+        _amountMoney += _moneyPerLevel;
+        AmountMoneyChanged?.Invoke(_amountMoney);
+    }
+
     public void WithdrawMoney(int amount)
     {
         _amountMoney -= amount;

@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isMoving;
 
     public event UnityAction StartMoving;
+    public event UnityAction Fell;
 
     public void Initialize(ITouchHandler touchHandler)
     {

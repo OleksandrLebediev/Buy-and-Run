@@ -39,6 +39,10 @@ public class MultiplierBoard : MonoBehaviour
         _meshRenderer.material.color = color; //("_Color", color);
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        transform.localPosition = position;
+    }
 
     public void ActivatePlace()
     {

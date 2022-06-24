@@ -49,6 +49,8 @@ public class FinishZone : MonoBehaviour
         _player = player;
         _powerForce = player.PriceAllItems;
         _player.OnFinishEntered();
+        _boardRoad.SetTarget(player.transform);
+        //StartCoroutine(_boardRoad.BuildRoadRealTimeCoroutine(player.transform));
         StartCoroutine(AwardScenario(player));
     }
 

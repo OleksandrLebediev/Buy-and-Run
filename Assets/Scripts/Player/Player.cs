@@ -11,6 +11,10 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerAudio _audio;
     [SerializeField] private Transform _body;
 
+    [Header("Ground Check")]
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private LayerMask _ground;
+    private bool _isFell;
 
     private PlayerMovement _movement;
     private CapsuleCollider _collider;
@@ -20,6 +24,7 @@ public class Player : MonoBehaviour
     private AddedMoneyEffect _moneyEffect;
     private BoostSpeedEffect _boostEffect;
     private int _priceAllItems;
+    private bool _isFinished;
 
     public PlayerMovement PlayerMovement { get { return _movement; } }
     public Rigidbody Rigidbody { get { return _rigidbody; } }   
@@ -62,9 +67,11 @@ public class Player : MonoBehaviour
     {
         _shopingCart.ItemAdded -= OnItemAdded;
         _shopingCart.ItemRemoved -= OnItemRemoved;
+        _shopingCart.ItemLost -= OnItemLost;
         _shopingCart.ItemSold -= OnItemSold;
         _shopingCart.SpeedBoosted -= OnSpeedBoosted;
         _shopingCart.CashÑollected -= OnCashÑollected;
+        _shopingCart.Crashed -= OnCartCrashed;
         _moneyEffect.EffectÑompleted -= OneEffectÑompleted;
         _movement.StartMoving -= OnStartMoving;
     }
@@ -72,6 +79,7 @@ public class Player : MonoBehaviour
     public void OnFinishEntered()
     {
         _movement.DisableMovement();
+        _isFinished = true;
         OffSpeedBoosted();
     }
 
@@ -155,5 +163,26 @@ public class Player : MonoBehaviour
     public void ForceUP(float force)
     {
         _rigidbody.AddForce(transform.up * force, ForceMode.Impulse);
+    }
+
+    private void FixedUpdate()
+    {
+        if (_isFell == true || _isFinished == true) return;
+
+        if (IsGrounded() == false)
+        {
+            _rigidbody.useGravity = true;
+            _rigidbody.mass = 100;
+            _rigidbody.isKinematic = false;
+            _movement.DisableMovement();
+            DOVirtual.DelayedCall(2, () => Died?.Invoke());
+            DOVirtual.DelayedCall(4, () => _rigidbody.isKinematic = true);
+            _isFell = true;
+        }
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics.CheckSphere(_groundCheck.position, 1, _ground);
     }
 }

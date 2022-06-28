@@ -10,8 +10,8 @@ public class FinishZone : MonoBehaviour
     [SerializeField] private FinishLine _finishLine;
     [SerializeField] private Transform _breakpoint;
     [SerializeField] private MultiplierBoardRoad _boardRoad;
-    [SerializeField] private Box _box;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private Box _box;
 
     [SerializeField] private AudioClip _jumpClip;
     [SerializeField] private AudioClip _fallingClip;
@@ -23,6 +23,7 @@ public class FinishZone : MonoBehaviour
     private int _powerForce;
 
     private ItemTransmitter _itemTransmitter = new ItemTransmitter();
+    private WaitForSeconds _delayDetweenJump = new WaitForSeconds(0.5f);
     private CameraHendler _cameraHendler;
     private PlayerWallet _playerWallet;
 
@@ -47,10 +48,9 @@ public class FinishZone : MonoBehaviour
     private void OnPlayerFinished(Player player)
     {
         _player = player;
-        _powerForce = player.PriceAllItems;
+        _powerForce = player.PriceAllItems / 2;
         _player.OnFinishEntered();
         _boardRoad.SetTarget(player.transform);
-        //StartCoroutine(_boardRoad.BuildRoadRealTimeCoroutine(player.transform));
         StartCoroutine(AwardScenario(player));
     }
 
@@ -68,26 +68,24 @@ public class FinishZone : MonoBehaviour
         Vector3 targetJump = _box.transform.position;
         targetJump.y += 2;
 
-        player.Tern();
+        player.Body.DOLocalRotate(new Vector3(0, -180f, 0), 0.5f);
 
 
 
         yield return JupmAnimation(player, targetJump);
-        yield return new WaitForSeconds(0.5f);
+        yield return _delayDetweenJump;
 
         yield return JupmAnimation(player, targetJump);
-
-        yield return new WaitForSeconds(0.5f);
+        yield return _delayDetweenJump;
 
         yield return JupmAnimation(player, targetJump);
-
-        yield return new WaitForSeconds(0.5f);
+        yield return _delayDetweenJump;
 
         yield return _box.OpenCoroutine();
 
         _box.ItemsExplosion(_powerForce);
         _player.EnablePhysics();
-        _player.ForceUP(_powerForce);
+        ForceUP(_powerForce);
         _player.PlayerAnimator.OnFalling(true);
         _audioSource.PlayOneShot(_fallingClip);
 
@@ -133,5 +131,10 @@ public class FinishZone : MonoBehaviour
 
         player.PlayerAnimator.OnGrounded(true);
         player.PlayerAnimator.OnJumping(false);
+    }
+
+    private void ForceUP(float force)
+    {
+       _player.Rigidbody.AddForce(transform.up * force, ForceMode.Impulse);
     }
 }

@@ -17,6 +17,7 @@ public class Buyer : MonoBehaviour, IBuyer
     private readonly string Carrying = "IsCarrying";
     private Animator _animator;
     private int _currentAmountItems = 0;
+    private Coroutine _freeCoroutine;
 
     public Transform ThisTransform => transform;
     public float ReceiveDelay => _receiveDelay;
@@ -45,12 +46,14 @@ public class Buyer : MonoBehaviour, IBuyer
 
     private void Start()
     {
-        _buyerDisplay.Initialize(_amountItems, _itemData.Icon);
+        _buyerDisplay.Initialize(_orderPrice, _amountItems, _itemData.Icon);
         _meshRenderer.material.SetColor("_Color", _colorChanger.GetRandomColor());
     }
 
     public void OnItemReceiving(Item item)
     {
+        if (_orderPrice == 0) return;
+
         _animator.SetBool(Carrying, true);
         _currentAmountItems++;
         _buyerDisplay.UpdateCountItems(_currentAmountItems);
@@ -62,6 +65,7 @@ public class Buyer : MonoBehaviour, IBuyer
 
     public void OnItemReceived(Item item)
     {
+
     }
 
     public Vector3 GetPosition()
@@ -71,11 +75,15 @@ public class Buyer : MonoBehaviour, IBuyer
 
     private void OnShopingCartEntered(ShopingCart cart)
     {
-        cart.TryGetItemForMoney(this);
+        if (_orderPrice == 0)
+            _freeCoroutine = StartCoroutine(cart.TryGetItemForFree(this));
+        else
+            cart.TryGetItemForMoney(this);
     }
 
     private void OnShopingCartExited(ShopingCart cart)
     {
-
+        if (_freeCoroutine != null)
+            StopCoroutine(_freeCoroutine);
     }
 }

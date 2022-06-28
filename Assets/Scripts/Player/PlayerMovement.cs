@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _horizontalSpeed;
 
     private ITouchHandler _touchHandler;
+    private PlayerAnimator _animator;
     private Vector3 _movePosition = Vector3.zero;
     private float _currentForwardSpeed;
     private float _horizontalPosition;
@@ -16,11 +18,11 @@ public class PlayerMovement : MonoBehaviour
     private bool _isMoving;
 
     public event UnityAction StartMoving;
-    public event UnityAction Fell;
 
-    public void Initialize(ITouchHandler touchHandler)
+    public void Initialize(ITouchHandler touchHandler, PlayerAnimator playerAnimator)
     {
         _touchHandler = touchHandler;
+        _animator = playerAnimator;
         _touchHandler.MovingTouch += HorizontalMove;
         _touchHandler.FirstTouch += OnFirstTap;
 
@@ -79,6 +81,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnFirstTap()
     {
         _isMoving = true;
-        StartMoving?.Invoke();
+        _animator.OnPushAnimation(true);
     }
 }

@@ -1,7 +1,7 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class BuyerDisplay : MonoBehaviour
 {
@@ -12,9 +12,16 @@ public class BuyerDisplay : MonoBehaviour
 
     private int _amountItems;
 
-    public void Initialize(int amountItems, Sprite orderSprite)
+    public void Initialize(int orderPrice, int amountItems, Sprite orderSprite)
     {
-        _countHeader.text = $"{0}/{amountItems}";
+        if (orderPrice == 0)
+        {
+            _countHeader.text = "Free";
+            _countHeader.color = Color.red;
+        }
+        else
+            _countHeader.text = $"{0}/{amountItems}";
+
         _item.sprite = orderSprite;
         _amountItems = amountItems;
         _smile.gameObject.SetActive(false);

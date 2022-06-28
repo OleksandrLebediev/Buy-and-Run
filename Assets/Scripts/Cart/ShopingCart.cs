@@ -30,9 +30,11 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender, ICashCo
     public event UnityAction<int> ItemRemoved;
     public event UnityAction<int> ItemLost;
     public event UnityAction<int> ItemSold;
+    public event UnityAction<int> ItemSoldFree;
     public event UnityAction<int> CashÑollected;
     public event UnityAction Crashed; 
     public event UnityAction SpeedBoosted;
+
 
     public void Hide()
     {
@@ -43,6 +45,12 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender, ICashCo
     {
         StartCoroutine(_itemTransmitter.MultiCountTransmittingCoroutine(buyer.OrderAmountItems,
             buyer.OrderItemName, this, buyer, () => ItemSold?.Invoke(buyer.OrderAmountItems)));
+    }
+
+    public IEnumerator TryGetItemForFree(IBuyer buyer)
+    {
+        yield return _itemTransmitter.MultiTransmittingCoroutine(this, buyer,
+            buyer.OrderItemName, (price) => { ItemSoldFree.Invoke(price); _display.AddCash(-price);  });
     }
 
     private void AddItem(Item item)
@@ -71,7 +79,6 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender, ICashCo
             Crash();
             return;
         }
-
 
         while (damage > 0 && _items.Count != 0)
         {

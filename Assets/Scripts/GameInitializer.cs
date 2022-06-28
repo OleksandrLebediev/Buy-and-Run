@@ -41,8 +41,7 @@ public class GameInitializer : MonoBehaviour
         _wallet.Initialize(data.Money);
         _levelsControl.Initialize(_uIManager, data.Level);
         _gameAnalyticsHandler.Intialize(_levelsControl, _wallet);
-
-        
+      
         UIInputData uIInputData = new UIInputData(_levelsControl, _wallet, _touchHandler);
         _uIManager.Initialize(_playerSpawner, _finishSpawner, uIInputData, _wallet);
         _touchHandler.Initialize(_uIManager);
@@ -67,5 +66,6 @@ public class GameInitializer : MonoBehaviour
         finishZone.Initialize(_cameraHendler, _wallet);
 
         _cameraHendler.SetFollow(player.transform);
+        _wallet.ResetMoneyPerLevel();
     }
 }

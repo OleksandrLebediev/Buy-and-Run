@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     public ShopingCart ShopingCart { get { return _shopingCart; } }
     public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } }
     public PlayerPriceDisplay PriceDisplay { get { return _playerPriceDisplay; } }
+    public Transform Body { get { return _body; } }
     public int PriceAllItems => _priceAllItems;
 
     public event UnityAction Died;
@@ -46,7 +47,7 @@ public class Player : MonoBehaviour
     public void Initialize(TouchHandler touchHandler, BoostSpeedEffect speedEffect,
         AddedMoneyEffect addedMoneyEffect, PlayerWallet wallet)
     {
-        _movement.Initialize(touchHandler);
+        _movement.Initialize(touchHandler, _playerAnimator);
         _moneyEffect = addedMoneyEffect;
         _wallet = wallet;
         _boostEffect = speedEffect;
@@ -55,13 +56,12 @@ public class Player : MonoBehaviour
         _shopingCart.ItemRemoved += OnItemRemoved;
         _shopingCart.ItemLost += OnItemLost;
         _shopingCart.ItemSold += OnItemSold;
+        _shopingCart.ItemSoldFree += ItemSoldFree;
         _shopingCart.SpeedBoosted += OnSpeedBoosted;
         _shopingCart.CashÑollected += OnCashÑollected;
         _shopingCart.Crashed += OnCartCrashed;
         _moneyEffect.EffectÑompleted += OneEffectÑompleted;
-        _movement.StartMoving += OnStartMoving;
     }
-
 
     private void OnDestroy()
     {
@@ -69,11 +69,11 @@ public class Player : MonoBehaviour
         _shopingCart.ItemRemoved -= OnItemRemoved;
         _shopingCart.ItemLost -= OnItemLost;
         _shopingCart.ItemSold -= OnItemSold;
+        _shopingCart.ItemSoldFree -= ItemSoldFree;
         _shopingCart.SpeedBoosted -= OnSpeedBoosted;
         _shopingCart.CashÑollected -= OnCashÑollected;
         _shopingCart.Crashed -= OnCartCrashed;
         _moneyEffect.EffectÑompleted -= OneEffectÑompleted;
-        _movement.StartMoving -= OnStartMoving;
     }
 
     public void OnFinishEntered()
@@ -81,11 +81,6 @@ public class Player : MonoBehaviour
         _movement.DisableMovement();
         _isFinished = true;
         OffSpeedBoosted();
-    }
-
-    private void OnStartMoving()
-    {
-       _playerAnimator.OnPushAnimation(true);
     }
 
     private void OnSpeedBoosted()
@@ -115,12 +110,20 @@ public class Player : MonoBehaviour
         _playerPriceDisplay.UpdatePrice(_priceAllItems);
         _audio.PlayCollectedItemClip();
     }
+
     private void OnItemLost(int price)
     {
         _priceAllItems -= price;
         _playerPriceDisplay.UpdatePrice(_priceAllItems);
         _audio.PlayLostClip();
     }
+
+    private void ItemSoldFree(int price)
+    {
+        _priceAllItems -= price;
+        _playerPriceDisplay.UpdatePrice(_priceAllItems);
+    }
+
 
     private void OnItemSold(int price)
     {
@@ -155,22 +158,13 @@ public class Player : MonoBehaviour
         _collider.height = 0.8f;
     }
 
-    public void Tern()
-    {
-        _body.DOLocalRotate(new Vector3(0, -180f, 0), 0.5f);
-    }
-
-    public void ForceUP(float force)
-    {
-        _rigidbody.AddForce(transform.up * force, ForceMode.Impulse);
-    }
-
     private void FixedUpdate()
     {
         if (_isFell == true || _isFinished == true) return;
 
-        if (IsGrounded() == false)
+        if (IsGrounded() == false) 
         {
+            if (transform.position.y > 0) return;
             _rigidbody.useGravity = true;
             _rigidbody.mass = 100;
             _rigidbody.isKinematic = false;

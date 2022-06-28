@@ -16,14 +16,17 @@ public class ItemTransmitter
        });
     }
 
-    public IEnumerator MultiTransmittingCoroutine(IItemsSender sender, IItemsRecipient recipient)
+    public IEnumerator MultiTransmittingCoroutine(IItemsSender sender, IItemsRecipient recipient, 
+        string name = null, UnityAction<int> action = null)
     {
         WaitForSeconds delay = new WaitForSeconds(recipient.ReceiveDelay);
         while (sender.IsEmpty == false)
         {
-            Item item = sender.GetItem();
+            Item item = sender.GetItem(name);
+            if (item == null) yield break;
             Transmitting(item, recipient);
             recipient.OnItemReceiving(item);
+            if(action != null) action?.Invoke(item.Price);
             yield return delay;
         }
     }

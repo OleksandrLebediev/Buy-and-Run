@@ -47,6 +47,8 @@ namespace CommonUIElement
 
         private void ShowAnimations()
         {
+            _profit = 0;
+            UpdateProfit();
             transform.localScale = Vector3.zero;
             transform.DOScale(1, _durationShowAnimation).SetEase(Ease.OutBack);
         }

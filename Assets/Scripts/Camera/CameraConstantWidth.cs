@@ -1,9 +1,6 @@
 using UnityEngine;
 
-/// <summary>
-/// Keeps constant camera width instead of height, works for both Orthographic & Perspective cameras
-/// Made for tutorial https://youtu.be/0cmxFjP375Y
-/// </summary>
+
 public class CameraConstantWidth : MonoBehaviour
 {
     public Vector2 DefaultResolution = new Vector2(720, 1280);
@@ -16,6 +13,7 @@ public class CameraConstantWidth : MonoBehaviour
 
     private float initialFov;
     private float horizontalFov = 120f;
+
 
     private void Start()
     {
@@ -33,7 +31,7 @@ public class CameraConstantWidth : MonoBehaviour
         if (componentCamera.orthographic)
         {
             float constantWidthSize = initialSize * (targetAspect / componentCamera.aspect);
-            componentCamera.orthographicSize = Mathf.Lerp(constantWidthSize, initialSize, WidthOrHeight);
+                componentCamera.orthographicSize = Mathf.Lerp(constantWidthSize, initialSize, WidthOrHeight);
         }
         else
         {

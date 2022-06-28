@@ -3168,6 +3168,7 @@ MonoBehaviour:
   _display: {fileID: 3872803256694986019}
   _bodyCart: {fileID: 4481808986452706291}
   _crashBodyCart: {fileID: 7813782647442495264}
+  _connected: {fileID: 0}
 --- !u!65 &4143205944834510016
 BoxCollider:
   m_ObjectHideFlags: 0

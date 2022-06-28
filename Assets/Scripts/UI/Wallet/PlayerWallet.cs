@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerWallet : MonoBehaviour, IAcceptingMoney, IBalanceInformant
 {
     public event UnityAction<int> AmountMoneyChanged;
-    
+
     private int _amountMoney;
     private int _moneyPerLevel;
 
@@ -17,6 +15,11 @@ public class PlayerWallet : MonoBehaviour, IAcceptingMoney, IBalanceInformant
     {
         _amountMoney = amount;
         AmountMoneyChanged?.Invoke(amount);
+    }
+
+    public void ResetMoneyPerLevel()
+    {
+        _moneyPerLevel = 0;
     }
 
     public void AddMoney(int amount)

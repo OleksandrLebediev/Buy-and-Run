@@ -1154,8 +1154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dbfb1b42c90bf544869f31565761032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forwardSpeed: 8
-  _forwardSpeedBoost: 14
+  _forwardSpeed: 10
+  _forwardSpeedBoost: 16
   _horizontalSpeed: 1
 --- !u!114 &2891576248822369275
 MonoBehaviour:
@@ -3168,7 +3168,6 @@ MonoBehaviour:
   _display: {fileID: 3872803256694986019}
   _bodyCart: {fileID: 4481808986452706291}
   _crashBodyCart: {fileID: 7813782647442495264}
-  _connected: {fileID: 0}
 --- !u!65 &4143205944834510016
 BoxCollider:
   m_ObjectHideFlags: 0

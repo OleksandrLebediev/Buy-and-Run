@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -35,6 +36,7 @@ public class UIManager : MonoBehaviour, IUIEventsHandler
 
     private void OnPressedRestartButton()
     {
+        DOTween.Clear();
         _loseScreen.Hide();
         _transitionScreen.Show();
         _mainMenu.Show();
@@ -43,6 +45,7 @@ public class UIManager : MonoBehaviour, IUIEventsHandler
 
     private void OnPressedNextButton()
     {
+        DOTween.Clear();
         _winScreen.Hide();
         _transitionScreen.Show();
         _mainMenu.Show();

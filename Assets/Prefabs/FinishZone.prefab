@@ -592,8 +592,8 @@ MonoBehaviour:
   _finishLine: {fileID: 1694522125236745781}
   _breakpoint: {fileID: 6243056345117374448}
   _boardRoad: {fileID: 6243056344473696950}
-  _box: {fileID: 3715268810941153530}
   _audioSource: {fileID: 8028702706224773192}
+  _box: {fileID: 3715268810941153530}
   _jumpClip: {fileID: 8300000, guid: 9c81708937d7b400f94950a59f4ca6bb, type: 3}
   _fallingClip: {fileID: 8300000, guid: b99da9a57308d4ba1bee1cf1d9038376, type: 3}
   _winClip: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
@@ -1030,7 +1030,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4694980957074672878, guid: 896f1bd26e0b26c4aa514ea47ebe37ca, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 4694980957074672878, guid: 896f1bd26e0b26c4aa514ea47ebe37ca, type: 3}
       propertyPath: m_LocalRotation.w

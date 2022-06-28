@@ -26,18 +26,18 @@ public class GameAnalyticsHandler
 
     private void OnLevelStart(int level)
     {
-        //TinySauce.OnGameStarted("level_" + level);
+        TinySauce.OnGameStarted("level_" + level);
     }
 
     private void OnLevelChanges(int level)
     {
-       // TinySauce.OnGameFinished(true, _balanceInformant.AmountMoney,
-      // "level_" + level);
+        TinySauce.OnGameFinished(true, _balanceInformant.AmountMoney,
+       "level_" + level);
     }
 
     private void OnLevelRestarted(int level)
     {
-        //    TinySauce.OnGameFinished(false,_balanceInformant.AmountMoney, 
-        //        "level_" + level);
+        TinySauce.OnGameFinished(false, _balanceInformant.AmountMoney,
+            "level_" + level);
     }
 }

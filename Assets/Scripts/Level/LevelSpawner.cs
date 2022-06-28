@@ -13,7 +13,7 @@ public class LevelSpawner : MonoBehaviour
            RemoveLevel(_level);
 
 
-       //Level level = GameObject.FindObjectOfType<Level>();
+        //_level = GameObject.FindObjectOfType<Level>();
         _level = Instantiate(_levels[0]);
         return _level;
     }

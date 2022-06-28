@@ -1085,8 +1085,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orderPrice: 1
-  _amountItems: 0
-  _itemData: {fileID: 11400000, guid: b758d6a69ac9adc4f98e240fe974dc84, type: 2}
+  _amountItems: 10
+  _itemData: {fileID: 11400000, guid: 6d4d194bcf98acf4e87eedc419107b04, type: 2}
   _buyerZone: {fileID: 5932200039864208894}
   _buyerDisplay: {fileID: 5932200041537603530}
   _receptionPoint: {fileID: 5932200040467186647}

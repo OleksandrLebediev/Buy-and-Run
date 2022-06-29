@@ -49,12 +49,6 @@ public class GameInitializer : MonoBehaviour
         _levelsControl.StartLevel();
     }
 
-    private void OnApplicationQuit()
-    {
-        SaveData data = new SaveData(_levelsControl.CurrentLevelID, _wallet.AmountMoney);
-        _saveSystem.Save(data);
-    }
-
     private void OnLevelStart(int levelId)
     {
         Player player = _playerSpawner.Spawn();
@@ -68,5 +62,8 @@ public class GameInitializer : MonoBehaviour
 
         _cameraHendler.SetFollow(player.transform);
         _wallet.ResetMoneyPerLevel();
+
+        SaveData data = new SaveData(_levelsControl.CurrentLevelID, _wallet.AmountMoney);
+        _saveSystem.Save(data);
     }
 }

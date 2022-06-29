@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6413323522392299661}
   - component: {fileID: 2531231280967729436}
   - component: {fileID: 8944940010920413694}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2451757215493292685}
   - component: {fileID: 4218000244698405507}
   - component: {fileID: 3324922297516418818}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: grinder ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 3360236489964981452}
   - component: {fileID: 286823299622681195}
   - component: {fileID: 6943752194513915091}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

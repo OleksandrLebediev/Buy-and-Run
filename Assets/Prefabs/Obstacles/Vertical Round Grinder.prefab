@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5765185479809320271}
   - component: {fileID: 8924434914422187784}
   - component: {fileID: 5906495296281667811}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Vertical Round Grinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 7972651793049849561}
   - component: {fileID: 6416317776806347132}
   - component: {fileID: 9146705617405212086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: vertical round grinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

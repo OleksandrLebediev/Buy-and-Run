@@ -76,9 +76,14 @@ public class MultiplierBoardRoad : MonoBehaviour
 
     public void ActivateBoard(float positionY)
     {
-        //int index = _multiplierBoards.FindIndex(x => x.transform.localPosition.y >= positionY);
         int center = _multiplierBoards.Count / 2;
-        _currentBoard = _multiplierBoards[center - 2];
+        if (_multiplierBoards[center].transform.localPosition.y > positionY)
+        {
+            center = _multiplierBoards.FindIndex(x => x.transform.localPosition.y >= positionY);
+        }
+        center -= 2;
+        if (center < 0) center = 0;
+        _currentBoard = _multiplierBoards[center];
         _currentBoard.ActivatePlace();
     }
 

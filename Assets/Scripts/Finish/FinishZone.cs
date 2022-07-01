@@ -49,6 +49,7 @@ public class FinishZone : MonoBehaviour
     {
         _player = player;
         _powerForce = player.PriceAllItems / 2;
+        _powerForce = (int)Mathf.Clamp(_powerForce, 0f, 50f);
         _player.OnFinishEntered();
         _boardRoad.SetTarget(player.transform);
         StartCoroutine(AwardScenario(player));
@@ -82,7 +83,7 @@ public class FinishZone : MonoBehaviour
         yield return _delayDetweenJump;
 
         yield return _box.OpenCoroutine();
-
+        _cameraHendler.SetPhysicsUpdateMethod();
         _box.ItemsExplosion(_powerForce);
         _player.EnablePhysics();
         ForceUP(_powerForce);

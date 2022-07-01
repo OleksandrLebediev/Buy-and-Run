@@ -7,6 +7,7 @@ public class CameraHendler : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera _virtualCamera1;
     [SerializeField] private CinemachineVirtualCamera _virtualCamera2;
+    [SerializeField] private CinemachineBrain _mainCamera;
     [SerializeField] Vector2 DefaultResolution = new Vector2(720, 1280);
     [SerializeField, Range(0f, 1f)] private float WidthOrHeight = 0;
 
@@ -35,10 +36,16 @@ public class CameraHendler : MonoBehaviour
         _virtualCamera2.Priority = priority;
     }
 
+    public void SetPhysicsUpdateMethod()
+    {
+        _mainCamera.m_UpdateMethod = CinemachineBrain.UpdateMethod.FixedUpdate;
+    }
+
     private void ResetPriority()
     {
         _virtualCamera1.Priority = 10;
         _virtualCamera2.Priority = 9;
+        _mainCamera.m_UpdateMethod = CinemachineBrain.UpdateMethod.SmartUpdate;
     }
 
     private void SetOrthographicSize()

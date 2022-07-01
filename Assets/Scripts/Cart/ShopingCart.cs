@@ -12,7 +12,7 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender, ICashCo
 
     private List<Item> _items = new List<Item>();
     private ItemTransmitter _itemTransmitter = new ItemTransmitter();
-    private JumpData _jumpData = new JumpData(1, 4, 0.5f);
+    private JumpData _jumpData = new JumpData(1, 4, 0.4f);
 
     private float _receiveDelay = 0.05f;
 
@@ -50,7 +50,12 @@ public class ShopingCart : MonoBehaviour, IItemsRecipient, IItemsSender, ICashCo
     public IEnumerator TryGetItemForFree(IBuyer buyer)
     {
         yield return _itemTransmitter.MultiTransmittingCoroutine(this, buyer,
-            buyer.OrderItemName, (price) => { ItemSoldFree.Invoke(price); _display.AddCash(-price);  });
+            buyer.OrderItemName, (item) => 
+            { 
+                ItemSoldFree.Invoke(item.Price);
+                _display.AddCash(-item.Price);  
+                RemoveItem(item);
+            });
     }
 
     private void AddItem(Item item)

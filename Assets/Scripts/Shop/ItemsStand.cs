@@ -18,7 +18,6 @@ public class ItemsStand : MonoBehaviour, IItemsSender
     private int _nextYPosition = 0;
     private int _nextZPosition = 0;
 
-    //private Vector3 _startPosition = new Vector3(0.6f, 0.25f, -2.7f);
     private float _stepPositionX = -0.4f;
     private float _stepPositionY = -0.2f;
     private float _stepPositionZ = 0.5f;

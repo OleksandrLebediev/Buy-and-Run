@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemName: Soda
   _price: 5
-  _icon: {fileID: 21300000, guid: 27bc1542108d841dca82d62ae078bf72, type: 3}
+  _icon: {fileID: 3225332345147443512, guid: 369eae83a1c84314bb61a99e33ef4522, type: 3}
   _itemPrefab: {fileID: 5267247319535041776, guid: b00789108a2003e4eb57762803af97be, type: 3}

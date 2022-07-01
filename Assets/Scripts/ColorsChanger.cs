@@ -17,9 +17,9 @@ public class ColorsChanger
 
     public Color GetColor(Color currentColor,float step = 1)
     {
-        currentColor = Color.Lerp(currentColor, _colors[colorIndex], step * Time.deltaTime);
+        currentColor = Color.Lerp(currentColor, _colors[colorIndex], Time.fixedDeltaTime * 5);
 
-        t = Mathf.Lerp(t, 1f, step * Time.deltaTime);
+        t = Mathf.Lerp(t, 1f, Time.fixedDeltaTime * 5);
         if (t > .9f)
         {
             t = 0f;

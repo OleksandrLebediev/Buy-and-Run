@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemName: Rubik
   _price: 4
-  _icon: {fileID: 21300000, guid: 27bc1542108d841dca82d62ae078bf72, type: 3}
+  _icon: {fileID: -4127348899448837467, guid: 369eae83a1c84314bb61a99e33ef4522, type: 3}
   _itemPrefab: {fileID: 6806365357846483574, guid: 44d5223d0f3577a46ad865740237accd, type: 3}

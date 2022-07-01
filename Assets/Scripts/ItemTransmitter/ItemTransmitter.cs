@@ -17,7 +17,7 @@ public class ItemTransmitter
     }
 
     public IEnumerator MultiTransmittingCoroutine(IItemsSender sender, IItemsRecipient recipient, 
-        string name = null, UnityAction<int> action = null)
+        string name = null, UnityAction<Item> action = null)
     {
         WaitForSeconds delay = new WaitForSeconds(recipient.ReceiveDelay);
         while (sender.IsEmpty == false)
@@ -26,7 +26,7 @@ public class ItemTransmitter
             if (item == null) yield break;
             Transmitting(item, recipient);
             recipient.OnItemReceiving(item);
-            if(action != null) action?.Invoke(item.Price);
+            if(action != null) action?.Invoke(item);
             yield return delay;
         }
     }

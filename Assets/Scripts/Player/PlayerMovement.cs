@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private float _horizontalPosition;
     private float _acceleration = 5;
     private bool _isMoving;
+    private float _direction;
 
     public event UnityAction StartMoving;
 
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_isMoving == false) return;
 
-        _horizontalPosition = direction * _horizontalSpeed * Time.deltaTime;
+        _horizontalPosition = direction * _horizontalSpeed * Time.fixedDeltaTime;
         _movePosition = transform.position;
         _movePosition.x += _horizontalPosition;
         _movePosition.x = Mathf.Clamp(_movePosition.x, Road.LeftExtremePoint, Road.RightExtremePoint);
